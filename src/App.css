@@ -110,3 +110,33 @@ button{
   height: auto;
   display: block;
 }
+
+
+
+@media (max-width: 600px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+  .logo-nav {
+    grid-template-columns: 1fr;
+  }
+  .navBar {
+    flex-direction: column;
+    margin: 0;
+  }
+  .navBar li {
+    margin-bottom: 10px; /* Add spacing between list items */
+  }
+  .reserveTable-section {
+    flex-direction: column; /* Change to a vertical layout */
+  }
+  .reserveTable-description {
+    margin-left: 20px; /* Adjust margin for smaller screens */
+  }
+  .card-section {
+    grid-template-columns: 1fr; /* Change to a single column layout */
+  }
+  .card {
+    margin: 10px; /* Adjust margins for smaller screens */
+  }
+}
