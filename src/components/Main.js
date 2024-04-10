@@ -1,64 +1,60 @@
 import React, { useReducer } from 'react';
-import BookingPage from './BookingPage';
+import BookingForm from './BookingForm';
 import ConfirmedBooking from './confirmedBooking';
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import HomePage from './HomePage';
+import BookingPage from './BookingPage';
 
 const API_URL = 'https://raw.githubusercontent.com/Meta-Front-End-Developer-PC/capstone/master/api.js';
 
-// Function to fetch available times from API for a given date
-const fetchAvailableTimes = async (date) => {
-  try {
-    const response = await fetch(`${API_URL}?date=${date}`);
-    const data = await response.json();
-    return data.availableTimes || [];
-  } catch (error) {
-    console.error('Error fetching available times:', error);
-    return [];
-  }
-};
-// Initialize available times for today's date
-const initializeTimes = async () => {
-  const today = new Date().toISOString().slice(0, 10); // Format today's date (YYYY-MM-DD)
-  return await fetchAvailableTimes(today);
-};
-
-// Update available times for the selected date
-const updateTimes = async (selectedDate) => {
-  return await fetchAvailableTimes(selectedDate);
-};
-
-const timesReducer = (state, action) => {
-  switch (action.type) {
-    case 'UPDATE_TIMES':
-      return updateTimes(action.payload.selectedDate);
-    default:
-      return state;
-  }
-};
-
-
 const Main = () => {
-  const [availableTimes, dispatch] = useReducer(timesReducer, [], initializeTimes);
-  const history = history();
+    const seededRandom = function (seed) {
+      var m = 2**35 - 31;
+      var a = 185852;
+      var s = seed % m;
+      return function () {
+          return (s = s * a % m) / m;
+      };
+  }
 
-  const submitForm = async (formData) => {
-    try {
-      const isSubmitted = await submitAPI(formData);
-      if (isSubmitted) {
-        setBookingConfirmed(true);
-        history.push('/confirmed'); // Navigate to confirmation page if booking is successful
-      } else {
-        console.error('Failed to submit booking');
+  const fetchAPI = function(date) {
+      let result = [];
+      let random = seededRandom(date.getDate());
+
+      for(let i = 17; i <= 23; i++) {
+          if(random() < 0.5) {
+              result.push(i + ':00');
+          }
+          if(random() < 0.5) {
+              result.push(i + ':30');
+          }
       }
-    } catch (error) {
-      console.error('Error submitting booking:', error);
-    }
+      return result;
   };
-  const handleDateChange = async (selectedDate) => {
-    dispatch({ type: 'UPDATE_TIMES', payload: { selectedDate } });
+  const submitAPI = function(formData) {
+      return true;
   };
+
+  const initialState = {availableTimes:  fetchAPI(new Date())}
+  const [state, dispatch] = useReducer(updateTimes, initialState);
+
+  function updateTimes(state, date) {
+      return {availableTimes: fetchAPI(new Date(date))}
+  }
+  const navigate = useNavigate();
+  function submitForm (formData) {
+      if (submitAPI(formData)) {
+          navigate("/confirmed")
+      }
+  }
+
   return (
     <div>
-      <BookingPage availableTimes={availableTimes} onDateChange={handleDateChange} onSubmitForm={submitForm}/>
+      <Routes> 
+          <Route path="/" element={<HomePage/>}></Route> 
+          <Route path="/confirmed" element={<ConfirmedBooking/>}></Route>
+          <Route path="/booking" element={<BookingPage availableTimes={state} dispatch={dispatch} submitForm={submitForm}/>} ></Route>
+      </Routes>
     </div>
   );
 };
