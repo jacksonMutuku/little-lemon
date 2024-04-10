@@ -19,7 +19,7 @@ const BookingForm = (props) => {
 
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'grid', maxWidth: '200px', gap: '20px' }}>
+    <form onSubmit={handleSubmit} className='form-container'>
       <h1>Book Now</h1>
       <label htmlFor="res-date">Choose date</label>
       <input type="date" id="res-date" name="date" value={date} onChange={(e) => handleChange(e.target.value)} required/>

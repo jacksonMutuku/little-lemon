@@ -1,8 +1,8 @@
 import './../App.css';
-import Navigation from './Nav';
 import Header from './Header'
 import Footer from './Footer'
 import Reserve from './Reserve';
+import Navigation from './Nav';
 
 
 const HomePage=()=> {
@@ -10,14 +10,13 @@ const HomePage=()=> {
     <div className="container">
       <header>
         <div className="logo-nav">
-          <Header/>
-          <Navigation/>
+          {/* <Header/> */}
         </div>
       </header>
       <main>
-        <div className="main-section"><Reserve/></div>
+        <div><Reserve/></div>
       </main>
-      <footer><Footer/></footer>
+      {/* <footer><Footer/></footer> */}
     </div>
   );
 }

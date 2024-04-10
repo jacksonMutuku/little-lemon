@@ -1,11 +1,11 @@
 import React, { useReducer } from 'react';
-import BookingForm from './BookingForm';
 import ConfirmedBooking from './confirmedBooking';
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import HomePage from './HomePage';
 import BookingPage from './BookingPage';
-
-const API_URL = 'https://raw.githubusercontent.com/Meta-Front-End-Developer-PC/capstone/master/api.js';
+import Header from './Header';
+import Footer from './Footer';
+import Layout from './Layout';
 
 const Main = () => {
     const seededRandom = function (seed) {
@@ -50,11 +50,13 @@ const Main = () => {
 
   return (
     <div>
-      <Routes> 
-          <Route path="/" element={<HomePage/>}></Route> 
-          <Route path="/confirmed" element={<ConfirmedBooking/>}></Route>
-          <Route path="/booking" element={<BookingPage availableTimes={state} dispatch={dispatch} submitForm={submitForm}/>} ></Route>
-      </Routes>
+      <Layout>
+        <Routes> 
+            <Route path="/" element={<HomePage/>}></Route>
+            <Route path="/confirmed" element={<ConfirmedBooking/>}></Route>
+            <Route path="/reservation" element={<BookingPage availableTimes={state} dispatch={dispatch} submitForm={submitForm}/>} ></Route>
+        </Routes>
+      </Layout>
     </div>
   );
 };

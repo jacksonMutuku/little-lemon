@@ -1,10 +1,22 @@
+import { useNavigate } from 'react-router-dom';
 import restauranfood from "./../assets/restauranfood.jpg"
 import greekSalad from "./../assets/greek salad.jpg"
 import bruchetta from "./../assets/bruchetta.svg"
 import lemonDesset from "./../assets/lemon dessert.jpg"
 
+function ReserveButton() {
+    const navigate = useNavigate();
+  
+    const handleClick = () => {
+      navigate('/reservation'); // Replace with your target path
+    };
+  
+    return (
+      <button onClick={handleClick}>Reserve a Table</button>
+    );
+  }
 
-const Reserve=()=>{
+const ReserveSection=()=>{
     return(
         <div>
             <div className="reserveTable-section">
@@ -12,7 +24,8 @@ const Reserve=()=>{
                     <h1 style={{color:'#F4CE14'}}>Little Lemon</h1>
                     <h3 style={{color:'white'}}>Chicago</h3>
                     <p style={{color:'white'}}>We are a family owned<br/>Mediterranean Restaurant,<br/>focused on traditional<br/> recipes serverd with a modern<br/> twist.</p>
-                    <button>Reserve a Table</button>
+                    {/* <button onClick={handleClick}>Reserve a Table</button> */}
+                    <ReserveButton/>
                 </div>
                 <div>
                     <img src={restauranfood} alt="restaurant food" style={{ width: '200px', height: '150px', marginRight: '150px', marginTop: '130px'}}/>
@@ -61,4 +74,4 @@ const Reserve=()=>{
         </div>
     )
 }
-export default Reserve
+export default ReserveSection
