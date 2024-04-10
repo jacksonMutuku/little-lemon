@@ -125,18 +125,18 @@ button{
     margin: 0;
   }
   .navBar li {
-    margin-bottom: 10px; /* Add spacing between list items */
+    margin-bottom: 10px;
   }
   .reserveTable-section {
-    flex-direction: column; /* Change to a vertical layout */
+    flex-direction: column;
   }
   .reserveTable-description {
-    margin-left: 20px; /* Adjust margin for smaller screens */
+    margin-left: 20px;
   }
   .card-section {
-    grid-template-columns: 1fr; /* Change to a single column layout */
+    grid-template-columns: 1fr;
   }
   .card {
-    margin: 10px; /* Adjust margins for smaller screens */
+    margin: 10px;
   }
 }

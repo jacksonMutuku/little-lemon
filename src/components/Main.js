@@ -1,64 +1,66 @@
-import restauranfood from "./../assets/restauranfood.jpg"
-import greekSalad from "./../assets/greek salad.jpg"
-import bruchetta from "./../assets/bruchetta.svg"
-import lemonDesset from "./../assets/lemon dessert.jpg"
+import React, { useReducer } from 'react';
+import BookingPage from './BookingPage';
+import ConfirmedBooking from './confirmedBooking';
+
+const API_URL = 'https://raw.githubusercontent.com/Meta-Front-End-Developer-PC/capstone/master/api.js';
+
+// Function to fetch available times from API for a given date
+const fetchAvailableTimes = async (date) => {
+  try {
+    const response = await fetch(`${API_URL}?date=${date}`);
+    const data = await response.json();
+    return data.availableTimes || [];
+  } catch (error) {
+    console.error('Error fetching available times:', error);
+    return [];
+  }
+};
+// Initialize available times for today's date
+const initializeTimes = async () => {
+  const today = new Date().toISOString().slice(0, 10); // Format today's date (YYYY-MM-DD)
+  return await fetchAvailableTimes(today);
+};
+
+// Update available times for the selected date
+const updateTimes = async (selectedDate) => {
+  return await fetchAvailableTimes(selectedDate);
+};
+
+const timesReducer = (state, action) => {
+  switch (action.type) {
+    case 'UPDATE_TIMES':
+      return updateTimes(action.payload.selectedDate);
+    default:
+      return state;
+  }
+};
 
 
-const Reserve=()=>{
-    return(
-        <div>
-            <div className="reserveTable-section">
-                <div className="reserveTable-description">
-                    <h1 style={{color:'#F4CE14'}}>Little Lemon</h1>
-                    <h3 style={{color:'white'}}>Chicago</h3>
-                    <p style={{color:'white'}}>We are a family owned<br/>Mediterranean Restaurant,<br/>focused on traditional<br/> recipes serverd with a modern<br/> twist.</p>
-                    <button>Reserve a Table</button>
-                </div>
-                <div>
-                    <img src={restauranfood} alt="restaurant food" style={{ width: '200px', height: '150px', marginRight: '150px', marginTop: '130px'}}/>
-                </div>
-            </div>
-            <div className="specials-section">
-                <div className="week-special">
-                    <h2>This weeks specials!</h2>
-                    <button>Online Menu</button>
-                </div>
-                <div className="card-section">
-                    <div className="card">
-                        <div className="image-container">
-                            <img src={greekSalad} alt="greek salad"/>
-                        </div>
-                        <div>
-                            <h2>Greek salad <span style={{ marginLeft: '20px' }}>$12.00</span></h2>
-                        </div>
-                        <p>The famous greek salad of<br/>crispy,lettuce, peppers,olives<br/> and our Chicago style teta<br/> cheese, garnished with <br/>crunch garlic and rosemary <br/>croutons. </p>
-                        <h3>Order a delivery $2</h3>
-                    </div>
-                    <div className="card">
-                        <div className="image-container">
-                            <img src={bruchetta} alt="greek salad"/>
-                        </div>
-                        <div>
-                            <h2>Bruchetta <span style={{ marginLeft: '20px' }}>$5.99</span></h2>
-                        </div>
-                        <p>Our Bruschetta is made from <br/>grilled bread that has been<br/> smeared with garlic and<br/> seasoned with salt and olive <br/>oil</p>
-                        <h3>Order a delivery $2</h3>
-                    </div>
-                    <div className="card">
-                        <div className="image-container">
-                            <img src={lemonDesset} alt="greek salad"/>
-                        </div>
-                        <div>
-                            <h2>Lemon Dessert <span style={{ marginLeft: '20px' }}>$5.00</span></h2>
-                        </div>
-                        <p>
-                            This comes straight from<br/>grandma's recipe book.<br/>Every last ingredient has been<br/>sourced and is as authentic<br/>as can be imagined. 
-                        </p>
-                        <h3>Order a delivery $2</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
-}
-export default Reserve
+const Main = () => {
+  const [availableTimes, dispatch] = useReducer(timesReducer, [], initializeTimes);
+  const history = history();
+
+  const submitForm = async (formData) => {
+    try {
+      const isSubmitted = await submitAPI(formData);
+      if (isSubmitted) {
+        setBookingConfirmed(true);
+        history.push('/confirmed'); // Navigate to confirmation page if booking is successful
+      } else {
+        console.error('Failed to submit booking');
+      }
+    } catch (error) {
+      console.error('Error submitting booking:', error);
+    }
+  };
+  const handleDateChange = async (selectedDate) => {
+    dispatch({ type: 'UPDATE_TIMES', payload: { selectedDate } });
+  };
+  return (
+    <div>
+      <BookingPage availableTimes={availableTimes} onDateChange={handleDateChange} onSubmitForm={submitForm}/>
+    </div>
+  );
+};
+
+export default Main;
