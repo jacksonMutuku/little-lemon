@@ -1,10 +1,8 @@
 import React, { useReducer } from 'react';
 import ConfirmedBooking from './confirmedBooking';
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import HomePage from './HomePage';
 import BookingPage from './BookingPage';
-import Header from './Header';
-import Footer from './Footer';
 import Layout from './Layout';
 
 const Main = () => {
